@@ -11,10 +11,6 @@
 
 `pyinstaller --onefile RavenWatcher.exe`
 
-or
-
-`pyinstaller RavenWatcher.spec`
-
 ## Usage
 
 - Download `RavenWatcher.exe` from the Releases page

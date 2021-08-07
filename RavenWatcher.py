@@ -5,33 +5,26 @@ import webbrowser
 
 
 def main():
-    # Check large version
-    URL = "https://raven.cam.ac.uk/"
+    basic_ravens = [
+        "/images/raven-logo.gif",
+        "/images/raven-logo-small.gif",
+        "/images/passwordRecovery_sm.png",
+    ]
+
+    check_raven_url("https://raven.cam.ac.uk/", basic_ravens)
+    check_raven_url("https://raven.cam.ac.uk/auth/login.html", basic_ravens)
+
+
+def check_raven_url(arg0, basic_ravens):
+    URL = arg0
     page = requests.get(URL)
 
     soup = BeautifulSoup(page.content, "html.parser")
 
     ravens = soup.find_all("img", class_="raven-logo")
-    try:
-        assert len(ravens) == 1
-        assert ravens[0]["src"] == "/images/raven-logo.gif"
-    except AssertionError:
-        for raven in ravens:
-            webbrowser.open(urllib.parse.urljoin(URL, raven["src"]), new=2)
 
-    # Check small version
-    URL2 = "https://raven.cam.ac.uk/auth/login.html"
-    page2 = requests.get(URL2)
-
-    soup2 = BeautifulSoup(page2.content, "html.parser")
-
-    ravens2 = soup2.find_all("img", class_="raven-logo")
-    try:
-        assert len(ravens2) == 2
-        assert ravens2[0]["src"] == "/images/raven-logo-small.gif"
-        assert ravens2[1]["src"] == "/images/passwordRecovery_sm.png"
-    except AssertionError:
-        for raven in ravens2:
+    for raven in ravens:
+        if raven["src"] not in basic_ravens:
             webbrowser.open(urllib.parse.urljoin(URL, raven["src"]), new=2)
 
 
